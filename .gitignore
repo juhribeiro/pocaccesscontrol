@@ -1,0 +1,5 @@
+accesscontrol/bin/
+accesscontrol/.vscode/tasks.json
+accesscontrol/.vscode/launch.json
+accesscontrol/obj/
+accesscontrol/Debug/
