@@ -14,7 +14,11 @@ namespace accesscontrol.Data
 
         public DbSet<Group> Groups { get; set; }
 
+        public DbSet<UserGroup> UserGroups { get; set; }
+
         public DbSet<Role> Roles { get; set; }
+
+        public DbSet<RoleGroup> RoleGroups { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

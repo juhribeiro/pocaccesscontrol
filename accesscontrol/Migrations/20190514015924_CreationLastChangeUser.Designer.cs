@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using accesscontrol.Data;
 
 namespace accesscontrol.Migrations
 {
     [DbContext(typeof(ACContext))]
-    partial class ACContextModelSnapshot : ModelSnapshot
+    [Migration("20190514015924_CreationLastChangeUser")]
+    partial class CreationLastChangeUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

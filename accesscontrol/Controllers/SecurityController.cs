@@ -40,7 +40,7 @@ namespace accesscontrol.Controllers
 
         // GET api/values
         [HttpGet("{id}")]
-       [Authorize(Roles = "Teste")]
+        [Authorize(Roles = "Teste")]
         public async Task<ActionResult> Get(int id)
         {
             return this.Ok("value1");

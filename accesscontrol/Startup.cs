@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using accesscontrol.Data;
+using accesscontrol.ExceptionMiddleware;
 using accesscontrol.Mapping;
 using accesscontrol.Repository;
 using accesscontrol.Service;
+using accesscontrol.Util;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -36,11 +38,19 @@ namespace accesscontrol
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
+            .AddJsonOptions(options =>
+            {
+                options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+            });
 
             var connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ACContext>
                   (options => options.UseSqlServer(connection));
+
+            services.AddOptions();
+            services.Configure<AuthConfig>(Configuration.GetSection("AuthConfig"));
+            var authconfig = this.Configuration.GetSection("AuthConfig").Get<AuthConfig>();
 
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
@@ -55,6 +65,7 @@ namespace accesscontrol
             services.AddScoped<IGroupService, GroupService>();
 
             services.AddScoped<ISecurityService, SecurityService>();
+            services.AddScoped<IUserGroupRepository, UserGroupRepository>();
 
             services.AddAuthorization(auth =>
                    {
@@ -71,25 +82,24 @@ namespace accesscontrol
                        }
                    ));
 
-             services.AddAuthentication(options =>
-             {
-                 options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-             })
-             .AddJwtBearer(options =>
-             {
-                 options.TokenValidationParameters = new TokenValidationParameters()
-                 {
-                     ValidateIssuerSigningKey = true,
-                   IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes("0123456789ABCDEF")),
-                   ValidateIssuer = true,
-                   ValidIssuer = "http://localhost:5001", // site that makes the token
-                   ValidateAudience = true,
-                   ValidAudience = "http://localhost:5000", // site that consumes the token
-                   ValidateLifetime = true, //validate the expiration 
-                   ClockSkew = System.TimeSpan.FromMinutes(5) //
-                 };
-             });
-        
+            services.AddAuthentication(options =>
+            {
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = authconfig.SymmetricSigningKey,
+                    ValidateIssuer = true,
+                    ValidIssuer = authconfig.Issuer, // site that makes the token
+                    ValidateAudience = true,
+                    ValidAudience = authconfig.Audience, // site that consumes the token
+                    ValidateLifetime = true, //validate the expiration 
+                    ClockSkew = System.TimeSpan.FromMinutes(5) //
+                };
+            });
 
             services.AddSwaggerGen(c =>
             {
@@ -124,8 +134,10 @@ namespace accesscontrol
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddFile(Configuration.GetSection("Serilog"));
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -147,6 +159,7 @@ namespace accesscontrol
            });
 
             app.UseCors("AccessControl");
+            app.ConfigureExceptionHandler(loggerFactory);
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();

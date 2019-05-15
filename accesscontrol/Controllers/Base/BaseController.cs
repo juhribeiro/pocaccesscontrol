@@ -17,7 +17,7 @@ namespace accesscontrol.Controllers
         }
 
         [HttpGet("")]
-        public async Task<ActionResult<List<T>>> GetAsync()
+        public virtual async Task<ActionResult<List<T>>> GetAsync()
         {
             return  await this._service.ListAsync();
         }
