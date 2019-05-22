@@ -1,3 +1,7 @@
+using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
 namespace accesscontrol.Data
@@ -19,6 +23,40 @@ namespace accesscontrol.Data
         public DbSet<Role> Roles { get; set; }
 
         public DbSet<RoleGroup> RoleGroups { get; set; }
+
+        /// <summary>
+        /// Change efective updates in data base
+        /// </summary>
+        /// <param name="cancellationToken"> Value of cancellation</param>
+        /// <returns> Number of all entities updates</returns>
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken))
+        {
+            this.ChangeTracker
+                .Entries()
+                .ToList()
+                .ForEach(entry =>
+                {
+                    if (entry.State == EntityState.Added)
+                    {
+                        if (entry.Properties.Any(a => a.Metadata.Name.Contains("CreateDate")))
+                        {
+                            entry.Property("CreateDate").CurrentValue = DateTime.UtcNow;
+                        }
+
+                        if (entry.Properties.Any(a => a.Metadata.Name.Contains("Active")))
+                        {
+                            entry.Property("Active").CurrentValue = true;
+                        }
+                    }
+
+                    if (entry.Properties.Any(a => a.Metadata.Name.Contains("LastChangeDate")))
+                    {
+                        entry.Property("LastChangeDate").CurrentValue = DateTime.UtcNow;
+                    }
+                });
+
+            return (await base.SaveChangesAsync(true, cancellationToken));
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

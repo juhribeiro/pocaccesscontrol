@@ -9,16 +9,16 @@ using AutoMapper;
 
 namespace accesscontrol.Service
 {
-    public class UserService : BaseService<User, UserModel>, IUserService
+    public class UserApplicationService : BaseService<UserApplication, UserApplicationModel>, IUserApplicationService
     {
-        public UserService(IMapper mapper, IUserRepository repository) : base(mapper, repository)
+        public UserApplicationService(IMapper mapper, IUserApplicationRepository repository) : base(mapper, repository)
         {
         }
 
-        public async Task<UserModel> AddAsync(UserModel model)
+        public async Task<UserApplicationModel> AddAsync(UserApplicationModel model)
         {
-            var user = this._mapper.Map<User>(model);
-            var entity = await this._repository.AddAsync(user);
+            var userapp = this._mapper.Map<UserApplication>(model);
+            var entity = await this._repository.AddAsync(userapp);
             return entity;
         }
 
@@ -27,19 +27,19 @@ namespace accesscontrol.Service
             await this._repository.DeleteAsync(id);
         }
 
-        public async Task<UserModel> GetByIdAsync(int id)
+        public async Task<UserApplicationModel> GetByIdAsync(int id)
         {
             return await this._repository.GetByIdAsync(id);
         }
 
-        public async Task<List<UserModel>> ListAsync()
+        public async Task<List<UserApplicationModel>> ListAsync()
         {
             return await this._repository.ListAsync();
         }
 
-        public async Task UpdateAsync(int id, UserModel model)
+        public async Task UpdateAsync(int id, UserApplicationModel model)
         {
-            var role = this._mapper.Map<User>(model);
+            var role = this._mapper.Map<UserApplication>(model);
             role.Id = id;
             await this._repository.UpdateAsync(role);
         }

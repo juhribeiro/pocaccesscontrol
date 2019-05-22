@@ -6,7 +6,7 @@ namespace accesscontrol.Controllers
 {
     public class ApplicationController : BaseController<ApplicationModel>
     {
-        public ApplicationController(ApplicationService service) : base(service)
+        public ApplicationController(IApplicationService service) : base(service)
         {
         }
     }

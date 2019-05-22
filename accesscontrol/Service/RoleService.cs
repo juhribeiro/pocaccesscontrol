@@ -11,25 +11,25 @@ namespace accesscontrol.Service
 {
     public class RoleService : BaseService<Role, RoleModel>, IRoleService
     {
-        public RoleService(IMapper mapper, RoleRepository repository) : base(mapper, repository)
+        public RoleService(IMapper mapper, IRoleRepository repository) : base(mapper, repository)
         {
         }
 
         public async Task<RoleModel> AddAsync(RoleModel model)
         {
-            var Role = this._mapper.Map<Role>(model);
-            var entity = await this._repository.AddAsync(Role);
+            var role = this._mapper.Map<Role>(model);
+            var entity = await this._repository.AddAsync(role);
             return entity;
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new System.NotImplementedException();
+            await this._repository.DeleteAsync(id);
         }
 
-        public Task<RoleModel> GetByIdAsync(int id)
+        public async Task<RoleModel> GetByIdAsync(int id)
         {
-            throw new System.NotImplementedException();
+            return await this._repository.GetByIdAsync(id);
         }
 
         public async Task<List<RoleModel>> ListAsync()
@@ -37,9 +37,11 @@ namespace accesscontrol.Service
             return await this._repository.ListAsync();
         }
 
-        public Task UpdateAsync(int id, RoleModel entity)
+        public async Task UpdateAsync(int id, RoleModel model)
         {
-            throw new System.NotImplementedException();
+            var role = this._mapper.Map<Role>(model);
+            role.Id = id;
+            await this._repository.UpdateAsync(role);
         }
     }
 }

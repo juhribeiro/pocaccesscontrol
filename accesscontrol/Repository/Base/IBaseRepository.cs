@@ -15,7 +15,8 @@ namespace accesscontrol.Repository.Base
         Task<T2> AddAsync(T1 entity);
         Task UpdateAsync(T1 entity);
         Task DeleteAsync(int id);
-        Task<List<T2>> FindByConditionAsync(Expression<Func<T1, bool>> expression);
+        Task<List<T2>> ListByConditionAsync(Expression<Func<T1, bool>> expression);
+        Task<T2> GetByConditionAsync(Expression<Func<T1, bool>> expression);
 
     }
 }

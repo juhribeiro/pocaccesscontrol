@@ -5,8 +5,13 @@ namespace accesscontrol.ExceptionMiddleware
 {
     public class MessageDetails
     {
+        public MessageDetails(MessageType type, string message)
+        {
+            Type = type;
+            Message = message;
+        }
+
         public MessageType Type { get; set; }
-        public int StatusCode { get; set; }
         public string Message { get; set; }
  
  

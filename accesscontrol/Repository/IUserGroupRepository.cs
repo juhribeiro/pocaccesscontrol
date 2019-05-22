@@ -5,7 +5,7 @@ using accesscontrol.Repository.Base;
 
 namespace accesscontrol.Repository
 {
-    public interface IUserGroupRepository
+    public interface IUserGroupRepository : IBaseRepository<UserGroup, UserGroupModel>
     {
         Task<UserGroup> GetUserGroupByEmailAsync(string email);
     }

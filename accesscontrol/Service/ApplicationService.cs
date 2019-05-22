@@ -11,7 +11,7 @@ namespace accesscontrol.Service
 {
     public class ApplicationService : BaseService<Application, ApplicationModel>, IApplicationService
     {
-        public ApplicationService(IMapper mapper, ApplicationRepository repository) : base(mapper, repository)
+        public ApplicationService(IMapper mapper, IApplicationRepository repository) : base(mapper, repository)
         {
         }
 
@@ -22,14 +22,14 @@ namespace accesscontrol.Service
             return entity;
         }
 
-        public Task DeleteAsync(int id)
+        public async Task DeleteAsync(int id)
         {
-            throw new System.NotImplementedException();
+            await this._repository.DeleteAsync(id);
         }
 
-        public Task<ApplicationModel> GetByIdAsync(int id)
+        public async Task<ApplicationModel> GetByIdAsync(int id)
         {
-            throw new System.NotImplementedException();
+            return await this._repository.GetByIdAsync(id);
         }
 
         public async Task<List<ApplicationModel>> ListAsync()
@@ -37,9 +37,11 @@ namespace accesscontrol.Service
             return await this._repository.ListAsync();
         }
 
-        public Task UpdateAsync(int id, ApplicationModel entity)
+        public async Task UpdateAsync(int id, ApplicationModel model)
         {
-            throw new System.NotImplementedException();
+            var application = this._mapper.Map<Application>(model);
+            application.Id = id;
+            await this._repository.UpdateAsync(application);
         }
     }
 }

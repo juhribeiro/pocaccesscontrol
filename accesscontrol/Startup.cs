@@ -49,6 +49,7 @@ namespace accesscontrol
                   (options => options.UseSqlServer(connection));
 
             services.AddOptions();
+            services.AddHttpContextAccessor();
             services.Configure<AuthConfig>(Configuration.GetSection("AuthConfig"));
             var authconfig = this.Configuration.GetSection("AuthConfig").Get<AuthConfig>();
 
@@ -64,8 +65,17 @@ namespace accesscontrol
             services.AddScoped<IGroupRepository, GroupRepository>();
             services.AddScoped<IGroupService, GroupService>();
 
+            services.AddScoped<IUserGroupService, UserGroupService>();
             services.AddScoped<ISecurityService, SecurityService>();
             services.AddScoped<IUserGroupRepository, UserGroupRepository>();
+
+            services.AddScoped<IUserApplicationService, UserApplicationService>();
+            services.AddScoped<IUserApplicationRepository, UserApplicationRepository>();
+
+            services.AddScoped<IUserApplicationService, UserApplicationService>();
+            services.AddScoped<IUserApplicationRepository, UserApplicationRepository>();
+
+            services.AddScoped<IAuthService, AuthService>();
 
             services.AddAuthorization(auth =>
                    {
@@ -159,7 +169,7 @@ namespace accesscontrol
            });
 
             app.UseCors("AccessControl");
-            app.ConfigureExceptionHandler(loggerFactory);
+            app.ConfigureCustomExceptionMiddleware();
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();

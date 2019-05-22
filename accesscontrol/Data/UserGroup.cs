@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace accesscontrol.Data
 {
-    public class UserGroup
+    public class UserGroup : BaseEntity
     {
         [ForeignKey(nameof(User))]
         public int UserId { get; set; }

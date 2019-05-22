@@ -13,8 +13,9 @@ namespace accesscontrol.Mapping
             this.CreateMap<UserModel, User>();
 
             this.CreateMap<Application, ApplicationModel>();
-            this.CreateMap<Application, ApplicationModel>();
-
+           
+            this.CreateMap<ApplicationModel, Application>();
+          
             this.CreateMap<Role, RoleModel>();
             this.CreateMap<RoleModel, Role>();
 
@@ -23,13 +24,13 @@ namespace accesscontrol.Mapping
 
             this.CreateMap<BaseEntity, BaseModel>();
 
-            this.CreateMap<BaseModel, BaseEntity>()
-            .ForMember(dest => dest.CreateDate, opt => opt.MapFrom(src => DateTime.UtcNow));
+            this.CreateMap<BaseModel, BaseEntity>();
 
             this.CreateMap<Group, GroupModel>()
             .ForMember(dest => dest.ApplicationCode, opt => opt.MapFrom(src => src.Application.Code));
 
-            this.CreateMap<GroupModel, Group>();
+            this.CreateMap<GroupModel, Group>()
+            .ForPath(dest => dest.Application.Code, opt => opt.MapFrom(src => src.ApplicationCode));
         }
     }
 }

@@ -18,7 +18,11 @@ namespace accesscontrol.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CreateUser = table.Column<string>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
+                    LastChangeUser = table.Column<string>(nullable: true),
+                    LastChangeDate = table.Column<DateTime>(nullable: false),
+                    Active = table.Column<bool>(nullable: false),
                     Code = table.Column<string>(maxLength: 50, nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true)
@@ -29,30 +33,17 @@ namespace accesscontrol.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Groups",
-                schema: "accesscontrol",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CreateDate = table.Column<DateTime>(nullable: false),
-                    Code = table.Column<string>(maxLength: 50, nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Groups", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Roles",
                 schema: "accesscontrol",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CreateUser = table.Column<string>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
+                    LastChangeUser = table.Column<string>(nullable: true),
+                    LastChangeDate = table.Column<DateTime>(nullable: false),
+                    Active = table.Column<bool>(nullable: false),
                     Code = table.Column<string>(maxLength: 50, nullable: false),
                     Name = table.Column<string>(nullable: true),
                     Description = table.Column<string>(nullable: true)
@@ -69,16 +60,19 @@ namespace accesscontrol.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CreateUser = table.Column<string>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
+                    LastChangeUser = table.Column<string>(nullable: true),
+                    LastChangeDate = table.Column<DateTime>(nullable: false),
+                    Active = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(maxLength: 150, nullable: false),
                     Email = table.Column<string>(nullable: false),
-                    CPF = table.Column<string>(nullable: true),
                     DocumentNumber = table.Column<string>(nullable: true),
                     PhoneNumber = table.Column<string>(nullable: true),
                     CellPhoneNumber = table.Column<string>(nullable: false),
                     Password = table.Column<string>(nullable: false),
                     ExpirationDate = table.Column<DateTime>(nullable: false),
-                    Active = table.Column<bool>(nullable: false)
+                    NumberLoginErros = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -86,28 +80,30 @@ namespace accesscontrol.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RoleGroup",
+                name: "Groups",
                 schema: "accesscontrol",
                 columns: table => new
                 {
-                    RoleId = table.Column<int>(nullable: false),
-                    GroupId = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CreateUser = table.Column<string>(nullable: true),
+                    CreateDate = table.Column<DateTime>(nullable: false),
+                    LastChangeUser = table.Column<string>(nullable: true),
+                    LastChangeDate = table.Column<DateTime>(nullable: false),
+                    Active = table.Column<bool>(nullable: false),
+                    Code = table.Column<string>(maxLength: 50, nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    ApplicationId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RoleGroup", x => new { x.RoleId, x.GroupId });
+                    table.PrimaryKey("PK_Groups", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_RoleGroup_Groups_GroupId",
-                        column: x => x.GroupId,
+                        name: "FK_Groups_Applications_ApplicationId",
+                        column: x => x.ApplicationId,
                         principalSchema: "accesscontrol",
-                        principalTable: "Groups",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RoleGroup_Roles_RoleId",
-                        column: x => x.RoleId,
-                        principalSchema: "accesscontrol",
-                        principalTable: "Roles",
+                        principalTable: "Applications",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -118,11 +114,18 @@ namespace accesscontrol.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<int>(nullable: false),
-                    ApplicationId = table.Column<int>(nullable: false)
+                    ApplicationId = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false),
+                    CreateUser = table.Column<string>(nullable: true),
+                    CreateDate = table.Column<DateTime>(nullable: false),
+                    LastChangeUser = table.Column<string>(nullable: true),
+                    LastChangeDate = table.Column<DateTime>(nullable: false),
+                    Active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserApplication", x => new { x.UserId, x.ApplicationId });
+                    table.UniqueConstraint("AK_UserApplication_Id", x => x.Id);
                     table.ForeignKey(
                         name: "FK_UserApplication_Applications_ApplicationId",
                         column: x => x.ApplicationId,
@@ -140,25 +143,66 @@ namespace accesscontrol.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserGroup",
+                name: "RoleGroups",
                 schema: "accesscontrol",
                 columns: table => new
                 {
-                    UserId = table.Column<int>(nullable: false),
-                    GroupId = table.Column<int>(nullable: false)
+                    RoleId = table.Column<int>(nullable: false),
+                    GroupId = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false),
+                    CreateUser = table.Column<string>(nullable: true),
+                    CreateDate = table.Column<DateTime>(nullable: false),
+                    LastChangeUser = table.Column<string>(nullable: true),
+                    LastChangeDate = table.Column<DateTime>(nullable: false),
+                    Active = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserGroup", x => new { x.UserId, x.GroupId });
+                    table.PrimaryKey("PK_RoleGroups", x => new { x.RoleId, x.GroupId });
+                    table.UniqueConstraint("AK_RoleGroups_Id", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserGroup_Groups_GroupId",
+                        name: "FK_RoleGroups_Groups_GroupId",
                         column: x => x.GroupId,
                         principalSchema: "accesscontrol",
                         principalTable: "Groups",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserGroup_Users_UserId",
+                        name: "FK_RoleGroups_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalSchema: "accesscontrol",
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserGroups",
+                schema: "accesscontrol",
+                columns: table => new
+                {
+                    UserId = table.Column<int>(nullable: false),
+                    GroupId = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false),
+                    CreateUser = table.Column<string>(nullable: true),
+                    CreateDate = table.Column<DateTime>(nullable: false),
+                    LastChangeUser = table.Column<string>(nullable: true),
+                    LastChangeDate = table.Column<DateTime>(nullable: false),
+                    Active = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserGroups", x => new { x.UserId, x.GroupId });
+                    table.UniqueConstraint("AK_UserGroups_Id", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserGroups_Groups_GroupId",
+                        column: x => x.GroupId,
+                        principalSchema: "accesscontrol",
+                        principalTable: "Groups",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserGroups_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "accesscontrol",
                         principalTable: "Users",
@@ -174,6 +218,12 @@ namespace accesscontrol.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Groups_ApplicationId",
+                schema: "accesscontrol",
+                table: "Groups",
+                column: "ApplicationId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Groups_Code",
                 schema: "accesscontrol",
                 table: "Groups",
@@ -181,9 +231,9 @@ namespace accesscontrol.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoleGroup_GroupId",
+                name: "IX_RoleGroups_GroupId",
                 schema: "accesscontrol",
-                table: "RoleGroup",
+                table: "RoleGroups",
                 column: "GroupId");
 
             migrationBuilder.CreateIndex(
@@ -200,9 +250,9 @@ namespace accesscontrol.Migrations
                 column: "ApplicationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserGroup_GroupId",
+                name: "IX_UserGroups_GroupId",
                 schema: "accesscontrol",
-                table: "UserGroup",
+                table: "UserGroups",
                 column: "GroupId");
 
             migrationBuilder.CreateIndex(
@@ -216,7 +266,7 @@ namespace accesscontrol.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "RoleGroup",
+                name: "RoleGroups",
                 schema: "accesscontrol");
 
             migrationBuilder.DropTable(
@@ -224,15 +274,11 @@ namespace accesscontrol.Migrations
                 schema: "accesscontrol");
 
             migrationBuilder.DropTable(
-                name: "UserGroup",
+                name: "UserGroups",
                 schema: "accesscontrol");
 
             migrationBuilder.DropTable(
                 name: "Roles",
-                schema: "accesscontrol");
-
-            migrationBuilder.DropTable(
-                name: "Applications",
                 schema: "accesscontrol");
 
             migrationBuilder.DropTable(
@@ -241,6 +287,10 @@ namespace accesscontrol.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users",
+                schema: "accesscontrol");
+
+            migrationBuilder.DropTable(
+                name: "Applications",
                 schema: "accesscontrol");
         }
     }

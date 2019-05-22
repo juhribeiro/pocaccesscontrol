@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace accesscontrol.Data
 {
-    public class RoleGroup
+    public class RoleGroup : BaseEntity
     {
         [ForeignKey(nameof(Role))]
         public int RoleId { get; set; }

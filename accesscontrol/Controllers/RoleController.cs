@@ -4,9 +4,9 @@ using accesscontrol.Services.Base;
 
 namespace accesscontrol.Controllers
 {
-    public class GroupController : BaseController<GroupModel>
+    public class RoleController : BaseController<RoleModel>
     {
-        public GroupController(IGroupService service) : base(service)
+        public RoleController(IRoleService service) : base(service)
         {
         }
     }

@@ -9,16 +9,16 @@ using AutoMapper;
 
 namespace accesscontrol.Service
 {
-    public class GroupService : BaseService<Group, GroupModel>, IGroupService
+    public class RoleGroupService : BaseService<RoleGroup, RoleGroupModel>, IRoleGroupService
     {
-        public GroupService(IMapper mapper, IGroupRepository repository) : base(mapper, repository)
+        public RoleGroupService(IMapper mapper, IRoleGroupRepository repository) : base(mapper, repository)
         {
         }
 
-        public async Task<GroupModel> AddAsync(GroupModel model)
+        public async Task<RoleGroupModel> AddAsync(RoleGroupModel model)
         {
-            var group = this._mapper.Map<Group>(model);
-            var entity = await this._repository.AddAsync(group);
+            var rolegroup = this._mapper.Map<RoleGroup>(model);
+            var entity = await this._repository.AddAsync(rolegroup);
             return entity;
         }
 
@@ -27,19 +27,19 @@ namespace accesscontrol.Service
             await this._repository.DeleteAsync(id);
         }
 
-        public async Task<GroupModel> GetByIdAsync(int id)
+        public async Task<RoleGroupModel> GetByIdAsync(int id)
         {
             return await this._repository.GetByIdAsync(id);
         }
 
-        public async Task<List<GroupModel>> ListAsync()
+        public async Task<List<RoleGroupModel>> ListAsync()
         {
             return await this._repository.ListAsync();
         }
 
-        public async Task UpdateAsync(int id, GroupModel model)
+        public async Task UpdateAsync(int id, RoleGroupModel model)
         {
-            var group = this._mapper.Map<Group>(model);
+            var group = this._mapper.Map<RoleGroup>(model);
             group.Id = id;
             await this._repository.UpdateAsync(group);
         }

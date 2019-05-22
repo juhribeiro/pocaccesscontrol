@@ -10,7 +10,7 @@ using accesscontrol.Data;
 namespace accesscontrol.Migrations
 {
     [DbContext(typeof(ACContext))]
-    [Migration("20190501013110_Initial")]
+    [Migration("20190522011227_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -28,13 +28,21 @@ namespace accesscontrol.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("Active");
+
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(50);
 
                     b.Property<DateTime>("CreateDate");
 
+                    b.Property<string>("CreateUser");
+
                     b.Property<string>("Description");
+
+                    b.Property<DateTime>("LastChangeDate");
+
+                    b.Property<string>("LastChangeUser");
 
                     b.Property<string>("Name");
 
@@ -52,17 +60,29 @@ namespace accesscontrol.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("Active");
+
+                    b.Property<int>("ApplicationId");
+
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(50);
 
                     b.Property<DateTime>("CreateDate");
 
+                    b.Property<string>("CreateUser");
+
                     b.Property<string>("Description");
+
+                    b.Property<DateTime>("LastChangeDate");
+
+                    b.Property<string>("LastChangeUser");
 
                     b.Property<string>("Name");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ApplicationId");
 
                     b.HasIndex("Code")
                         .IsUnique();
@@ -76,13 +96,21 @@ namespace accesscontrol.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("Active");
+
                     b.Property<string>("Code")
                         .IsRequired()
                         .HasMaxLength(50);
 
                     b.Property<DateTime>("CreateDate");
 
+                    b.Property<string>("CreateUser");
+
                     b.Property<string>("Description");
+
+                    b.Property<DateTime>("LastChangeDate");
+
+                    b.Property<string>("LastChangeUser");
 
                     b.Property<string>("Name");
 
@@ -100,11 +128,25 @@ namespace accesscontrol.Migrations
 
                     b.Property<int>("GroupId");
 
+                    b.Property<bool>("Active");
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<string>("CreateUser");
+
+                    b.Property<int>("Id");
+
+                    b.Property<DateTime>("LastChangeDate");
+
+                    b.Property<string>("LastChangeUser");
+
                     b.HasKey("RoleId", "GroupId");
+
+                    b.HasAlternateKey("Id");
 
                     b.HasIndex("GroupId");
 
-                    b.ToTable("RoleGroup");
+                    b.ToTable("RoleGroups");
                 });
 
             modelBuilder.Entity("accesscontrol.Data.User", b =>
@@ -115,12 +157,12 @@ namespace accesscontrol.Migrations
 
                     b.Property<bool>("Active");
 
-                    b.Property<string>("CPF");
-
                     b.Property<string>("CellPhoneNumber")
                         .IsRequired();
 
                     b.Property<DateTime>("CreateDate");
+
+                    b.Property<string>("CreateUser");
 
                     b.Property<string>("DocumentNumber");
 
@@ -129,9 +171,15 @@ namespace accesscontrol.Migrations
 
                     b.Property<DateTime>("ExpirationDate");
 
+                    b.Property<DateTime>("LastChangeDate");
+
+                    b.Property<string>("LastChangeUser");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150);
+
+                    b.Property<int?>("NumberLoginErros");
 
                     b.Property<string>("Password")
                         .IsRequired();
@@ -152,7 +200,21 @@ namespace accesscontrol.Migrations
 
                     b.Property<int>("ApplicationId");
 
+                    b.Property<bool>("Active");
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<string>("CreateUser");
+
+                    b.Property<int>("Id");
+
+                    b.Property<DateTime>("LastChangeDate");
+
+                    b.Property<string>("LastChangeUser");
+
                     b.HasKey("UserId", "ApplicationId");
+
+                    b.HasAlternateKey("Id");
 
                     b.HasIndex("ApplicationId");
 
@@ -165,11 +227,33 @@ namespace accesscontrol.Migrations
 
                     b.Property<int>("GroupId");
 
+                    b.Property<bool>("Active");
+
+                    b.Property<DateTime>("CreateDate");
+
+                    b.Property<string>("CreateUser");
+
+                    b.Property<int>("Id");
+
+                    b.Property<DateTime>("LastChangeDate");
+
+                    b.Property<string>("LastChangeUser");
+
                     b.HasKey("UserId", "GroupId");
+
+                    b.HasAlternateKey("Id");
 
                     b.HasIndex("GroupId");
 
-                    b.ToTable("UserGroup");
+                    b.ToTable("UserGroups");
+                });
+
+            modelBuilder.Entity("accesscontrol.Data.Group", b =>
+                {
+                    b.HasOne("accesscontrol.Data.Application", "Application")
+                        .WithMany("Groups")
+                        .HasForeignKey("ApplicationId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("accesscontrol.Data.RoleGroup", b =>

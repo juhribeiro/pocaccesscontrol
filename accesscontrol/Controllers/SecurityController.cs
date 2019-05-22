@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using accesscontrol.ExceptionMiddleware;
 using accesscontrol.Model;
 using accesscontrol.Service;
 using Microsoft.AspNetCore.Authorization;
@@ -11,10 +12,12 @@ namespace accesscontrol.Controllers
     public class SecurityController : ControllerBase
     {
         private readonly ISecurityService service;
+        private readonly IAuthService auth;
 
-        public SecurityController(ISecurityService service)
+        public SecurityController(ISecurityService service, IAuthService auth)
         {
             this.service = service;
+            this.auth = auth;
         }
 
         [HttpPost]
@@ -32,10 +35,10 @@ namespace accesscontrol.Controllers
 
         // GET api/values
         [HttpGet("")]
-        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Get()
         {
-            return this.Ok("value1");
+            var teste = this.auth.GetEmail();
+            return this.Ok(teste);
         }
 
         // GET api/values

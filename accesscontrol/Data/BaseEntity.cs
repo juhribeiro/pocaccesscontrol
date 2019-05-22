@@ -10,14 +10,7 @@ namespace accesscontrol.Data
         public string CreateUser { get; set; }
         public DateTime CreateDate { get; set; }
         public string LastChangeUser { get; set; }
-        public DateTime LastChangeDate
-        {
-            get
-            {
-                return DateTime.UtcNow;
-            }
-        }
-
+        public DateTime LastChangeDate { get; set; }
         public bool Active { get; set; }
     }
 }

@@ -14,31 +14,31 @@ namespace accesscontrol.Repository.Base
 {
     public class BaseRepository<T1, T2> : IBaseRepository<T1, T2> where T1 : BaseEntity where T2 : BaseModel
     {
-        private readonly ACContext _dbContext;
-        private readonly IMapper mapper;
+        public readonly ACContext _dbContext;
+        public readonly IMapper _mapper;
 
         public BaseRepository(ACContext dbContext, IMapper mapper)
         {
             this._dbContext = dbContext;
-            this.mapper = mapper;
+            this._mapper = mapper;
         }
 
         public Task<T2> GetByIdAsync(int id)
         {
-            return this._dbContext.Set<T1>().ProjectTo<T2>(mapper).SingleOrDefaultAsync(e => e.Id == id);
+            return this._dbContext.Set<T1>().ProjectTo<T2>(_mapper).SingleOrDefaultAsync(e => e.Id == id);
         }
 
         public Task<List<T2>> ListAsync()
         {
-            return this._dbContext.Set<T1>().ProjectTo<T2>(mapper).ToListAsync();
+            return this._dbContext.Set<T1>().ProjectTo<T2>(_mapper).ToListAsync();
         }
 
-        public async Task<T2> AddAsync(T1 entity)
+        public virtual async Task<T2> AddAsync(T1 entity)
         {
             await this._dbContext.Set<T1>().AddAsync(entity);
             await this._dbContext.SaveChangesAsync();
 
-            return this.mapper.Map<T2>(entity);
+            return this._mapper.Map<T2>(entity);
         }
 
         public async Task DeleteAsync(int id)
@@ -54,10 +54,16 @@ namespace accesscontrol.Repository.Base
             await this._dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<T2>> FindByConditionAsync(Expression<Func<T1, bool>> expression)
+        public async Task<List<T2>> ListByConditionAsync(Expression<Func<T1, bool>> expression)
         {
             var entities = await this._dbContext.Set<T1>().Where(expression).ToListAsync();
-            return this.mapper.Map<List<T2>>(entities);
+            return this._mapper.Map<List<T2>>(entities);
+        }
+
+        public async Task<T2> GetByConditionAsync(Expression<Func<T1, bool>> expression)
+        {
+            var entity = await this._dbContext.Set<T1>().FirstOrDefaultAsync(expression);
+            return this._mapper.Map<T2>(entity);
         }
     }
 }
