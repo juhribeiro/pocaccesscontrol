@@ -109,13 +109,14 @@ namespace accesscontrol.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserApplication",
+                name: "UserApplications",
                 schema: "accesscontrol",
                 columns: table => new
                 {
                     UserId = table.Column<int>(nullable: false),
                     ApplicationId = table.Column<int>(nullable: false),
-                    Id = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CreateUser = table.Column<string>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     LastChangeUser = table.Column<string>(nullable: true),
@@ -124,17 +125,17 @@ namespace accesscontrol.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserApplication", x => new { x.UserId, x.ApplicationId });
-                    table.UniqueConstraint("AK_UserApplication_Id", x => x.Id);
+                    table.PrimaryKey("PK_UserApplications", x => new { x.UserId, x.ApplicationId });
+                    table.UniqueConstraint("AK_UserApplications_Id", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserApplication_Applications_ApplicationId",
+                        name: "FK_UserApplications_Applications_ApplicationId",
                         column: x => x.ApplicationId,
                         principalSchema: "accesscontrol",
                         principalTable: "Applications",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserApplication_Users_UserId",
+                        name: "FK_UserApplications_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "accesscontrol",
                         principalTable: "Users",
@@ -149,7 +150,8 @@ namespace accesscontrol.Migrations
                 {
                     RoleId = table.Column<int>(nullable: false),
                     GroupId = table.Column<int>(nullable: false),
-                    Id = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CreateUser = table.Column<string>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     LastChangeUser = table.Column<string>(nullable: true),
@@ -183,7 +185,8 @@ namespace accesscontrol.Migrations
                 {
                     UserId = table.Column<int>(nullable: false),
                     GroupId = table.Column<int>(nullable: false),
-                    Id = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     CreateUser = table.Column<string>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
                     LastChangeUser = table.Column<string>(nullable: true),
@@ -244,9 +247,9 @@ namespace accesscontrol.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserApplication_ApplicationId",
+                name: "IX_UserApplications_ApplicationId",
                 schema: "accesscontrol",
-                table: "UserApplication",
+                table: "UserApplications",
                 column: "ApplicationId");
 
             migrationBuilder.CreateIndex(
@@ -270,7 +273,7 @@ namespace accesscontrol.Migrations
                 schema: "accesscontrol");
 
             migrationBuilder.DropTable(
-                name: "UserApplication",
+                name: "UserApplications",
                 schema: "accesscontrol");
 
             migrationBuilder.DropTable(

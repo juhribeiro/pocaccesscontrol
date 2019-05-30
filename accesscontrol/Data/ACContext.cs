@@ -2,19 +2,25 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using accesscontrol.Service;
 using Microsoft.EntityFrameworkCore;
 
 namespace accesscontrol.Data
 {
     public class ACContext : DbContext
     {
-        public ACContext(DbContextOptions<ACContext> options)
-           : base(options)
-        { }
+        private readonly IAuthService auth;
+        public ACContext(DbContextOptions<ACContext> options, IAuthService auth)
+        : base(options)
+        {
+            this.auth = auth;
+        }
 
         public DbSet<User> Users { get; set; }
 
         public DbSet<Application> Applications { get; set; }
+
+        public DbSet<UserApplication> UserApplications { get; set; }
 
         public DbSet<Group> Groups { get; set; }
 
@@ -43,10 +49,20 @@ namespace accesscontrol.Data
                             entry.Property("CreateDate").CurrentValue = DateTime.UtcNow;
                         }
 
+                        if (entry.Properties.Any(a => a.Metadata.Name.Contains("CreateUser")))
+                        {
+                            entry.Property("CreateUser").CurrentValue = this.auth.GetEmail();
+                        }
+
                         if (entry.Properties.Any(a => a.Metadata.Name.Contains("Active")))
                         {
                             entry.Property("Active").CurrentValue = true;
                         }
+                    }
+
+                    if (entry.Properties.Any(a => a.Metadata.Name.Contains("LastChangeUser")))
+                    {
+                        entry.Property("LastChangeUser").CurrentValue = this.auth.GetEmail();
                     }
 
                     if (entry.Properties.Any(a => a.Metadata.Name.Contains("LastChangeDate")))
@@ -64,68 +80,80 @@ namespace accesscontrol.Data
 
             ////User application
             modelBuilder.Entity<User>()
-            .HasMany(x => x.UserApplications)
-            .WithOne(x => x.User)
-            .HasForeignKey(x => x.UserId);
+                .HasMany(x => x.UserApplications)
+                .WithOne(x => x.User)
+                .HasForeignKey(x => x.UserId);
 
             modelBuilder.Entity<Application>()
-            .HasMany(x => x.UserApplications)
-            .WithOne(x => x.Application)
-            .HasForeignKey(x => x.ApplicationId);
+                .HasMany(x => x.UserApplications)
+                .WithOne(x => x.Application)
+                .HasForeignKey(x => x.ApplicationId);
 
             modelBuilder.Entity<UserApplication>()
-            .HasKey(x => new { x.UserId, x.ApplicationId });
+                .HasKey(x => new { x.UserId, x.ApplicationId });
+
+            modelBuilder.Entity<UserApplication>()
+                .Property(x => x.Id)
+                .ValueGeneratedOnAdd();
 
             //// user group
             modelBuilder.Entity<User>()
-            .HasMany(x => x.UserGroups)
-            .WithOne(x => x.User)
-            .HasForeignKey(x => x.UserId);
+                .HasMany(x => x.UserGroups)
+                .WithOne(x => x.User)
+                .HasForeignKey(x => x.UserId);
 
             modelBuilder.Entity<Group>()
-            .HasMany(x => x.UserGroups)
-            .WithOne(x => x.Group)
-            .HasForeignKey(x => x.GroupId);
+                .HasMany(x => x.UserGroups)
+                .WithOne(x => x.Group)
+                .HasForeignKey(x => x.GroupId);
 
             modelBuilder.Entity<UserGroup>()
-            .HasKey(x => new { x.UserId, x.GroupId });
+                .HasKey(x => new { x.UserId, x.GroupId });
+
+            modelBuilder.Entity<UserGroup>()
+                .Property(x => x.Id)
+                .ValueGeneratedOnAdd();
 
             //// role group
             modelBuilder.Entity<Role>()
-           .HasMany(x => x.RoleGroups)
-           .WithOne(x => x.Role)
-           .HasForeignKey(x => x.RoleId);
+                .HasMany(x => x.RoleGroups)
+                .WithOne(x => x.Role)
+                .HasForeignKey(x => x.RoleId);
 
             modelBuilder.Entity<Group>()
-            .HasMany(x => x.RoleGroups)
-            .WithOne(x => x.Group)
-            .HasForeignKey(x => x.GroupId);
+                .HasMany(x => x.RoleGroups)
+                .WithOne(x => x.Group)
+                .HasForeignKey(x => x.GroupId);
 
             modelBuilder.Entity<RoleGroup>()
-            .HasKey(x => new { x.RoleId, x.GroupId });
+                .HasKey(x => new { x.RoleId, x.GroupId });
+
+            modelBuilder.Entity<RoleGroup>()
+                .Property(x => x.Id)
+                .ValueGeneratedOnAdd();
 
             //// aplication groups
             modelBuilder.Entity<Application>()
-            .HasMany(x => x.Groups)
-            .WithOne(x => x.Application)
-            .HasForeignKey(x => x.ApplicationId);
+                .HasMany(x => x.Groups)
+                .WithOne(x => x.Application)
+                .HasForeignKey(x => x.ApplicationId);
 
             //// Unique
             modelBuilder.Entity<Group>()
-            .HasIndex(x => x.Code)
-            .IsUnique();
+                .HasIndex(x => x.Code)
+                .IsUnique();
 
             modelBuilder.Entity<Role>()
-            .HasIndex(x => x.Code)
-            .IsUnique();
+                .HasIndex(x => x.Code)
+                .IsUnique();
 
             modelBuilder.Entity<Application>()
-            .HasIndex(x => x.Code)
-            .IsUnique();
+                .HasIndex(x => x.Code)
+                .IsUnique();
 
             modelBuilder.Entity<User>()
-            .HasIndex(x => x.Email)
-            .IsUnique();
+                .HasIndex(x => x.Email)
+                .IsUnique();
         }
     }
 }

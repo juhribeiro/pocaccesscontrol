@@ -53,7 +53,7 @@ namespace accesscontrol.ExceptionMiddleware
 
                 message = details.Message;
             }
-            else if (exception is DbUpdateException && exception.InnerException.Message.Contains("Cannot insert duplicate key row in object"))
+            else if (exception is DbUpdateException && exception.InnerException != null && exception.InnerException.Message.Contains("Cannot insert duplicate key"))
             {
                 code = HttpStatusCode.BadRequest;
                 message = exception.InnerException.Message;

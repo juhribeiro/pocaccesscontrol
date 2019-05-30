@@ -30,7 +30,12 @@ namespace accesscontrol.Service
 
         public async Task<SecurityModel> LoginAsync(LoginModel model)
         {
-            var usergroups = await this.repository.GetUserGroupByEmailAsync(model.Email);
+            var usergroups = await this.repository.GetByEmailAsync(model.Email);
+            if (usergroups is null)
+            {
+                throw new CustomException(new MessageDetails(MessageType.Warning, "usuário não cadastrado ou não pertence a nenhum grupo"));
+            }
+
             var expiratedate = System.DateTime.Now.AddMinutes(30);
             if (usergroups.User.Password != model.Password)
             {
@@ -41,15 +46,18 @@ namespace accesscontrol.Service
                     var message = "Quantidade de tentativa de logins excedida, Tente recuperar sua senha para desbloquear seu usuário";
                     throw new CustomException(new MessageDetails(MessageType.Warning, message));
                 }
+
+                await this.repository.UpdateAsync(usergroups);
+                throw new CustomException(new MessageDetails(MessageType.Warning, "Login ou senha inválida"));
             }
             else
             {
+                usergroups.User.NumberLoginErros = 0;
                 usergroups.User.ExpirationDate = expiratedate;
+                await this.repository.UpdateAsync(usergroups);
             }
 
-            await this.repository.UpdateAsync(usergroups);
-
-            var security = this.service.GenerateToken(new Data.UserGroup(), expiratedate);
+            var security = this.service.GenerateToken(usergroups, expiratedate);
             return security;
         }
     }

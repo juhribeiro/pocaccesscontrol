@@ -11,6 +11,8 @@ namespace accesscontrol.Model
 
         public string CreateUser { get; private set; }
 
+        public DateTime LastChangeDate { get; private set; }
+
         public string LastChangeUser { get; private set; }
 
         public bool Active { get; set; }

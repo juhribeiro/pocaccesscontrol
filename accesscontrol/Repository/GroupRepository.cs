@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using accesscontrol.Data;
-using accesscontrol.ExceptionMiddleware;
 using accesscontrol.Model;
 using accesscontrol.Repository.Base;
 using AutoMapper;
@@ -16,14 +15,14 @@ namespace accesscontrol.Repository
 
         public override async Task<GroupModel> AddAsync(Group entity)
         {
-            var app = await this._dbContext.Applications.FirstOrDefaultAsync(x => x.Code.Equals(entity.Application.Code));
-            if (app is null)
-            {
-                throw new CustomException(new MessageDetails(Enums.MessageType.Error, $"Sorry, but not found application code {entity.Code}"));
-            }
-
-            entity.Application = this._mapper.Map<Application>(app);
+            entity.Application = await this.GetApplication(entity.ApplicationId);
             return await base.AddAsync(entity);
+        }
+
+        public override async Task UpdateAsync(Group entity)
+        {
+            entity.Application = await this.GetApplication(entity.ApplicationId);
+            await base.UpdateAsync(entity);
         }
     }
 }

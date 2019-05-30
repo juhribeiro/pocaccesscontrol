@@ -32,21 +32,5 @@ namespace accesscontrol.Controllers
             var token = await this.service.LoginAsync(login);
             return this.Ok(token);
         }
-
-        // GET api/values
-        [HttpGet("")]
-        public async Task<ActionResult> Get()
-        {
-            var teste = this.auth.GetEmail();
-            return this.Ok(teste);
-        }
-
-        // GET api/values
-        [HttpGet("{id}")]
-        [Authorize(Roles = "Teste")]
-        public async Task<ActionResult> Get(int id)
-        {
-            return this.Ok("value1");
-        }
     }
 }

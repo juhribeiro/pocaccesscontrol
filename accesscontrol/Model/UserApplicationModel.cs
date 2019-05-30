@@ -6,11 +6,9 @@ namespace accesscontrol.Model
     public class UserApplicationModel : BaseModel
     {
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        public int UserId { get; set; }
 
         [Required]
-        [MaxLength(50)]
-        public string ApplicationCode { get; set; }
+        public int ApplicationId { get; set; }
     }
 }

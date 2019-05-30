@@ -10,7 +10,7 @@ using accesscontrol.Data;
 namespace accesscontrol.Migrations
 {
     [DbContext(typeof(ACContext))]
-    [Migration("20190522011227_Initial")]
+    [Migration("20190528013114_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -134,7 +134,9 @@ namespace accesscontrol.Migrations
 
                     b.Property<string>("CreateUser");
 
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("LastChangeDate");
 
@@ -206,7 +208,9 @@ namespace accesscontrol.Migrations
 
                     b.Property<string>("CreateUser");
 
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("LastChangeDate");
 
@@ -218,7 +222,7 @@ namespace accesscontrol.Migrations
 
                     b.HasIndex("ApplicationId");
 
-                    b.ToTable("UserApplication");
+                    b.ToTable("UserApplications");
                 });
 
             modelBuilder.Entity("accesscontrol.Data.UserGroup", b =>
@@ -233,7 +237,9 @@ namespace accesscontrol.Migrations
 
                     b.Property<string>("CreateUser");
 
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("LastChangeDate");
 

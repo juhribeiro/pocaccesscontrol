@@ -3,6 +3,9 @@ using System.Threading.Tasks;
 using accesscontrol.Model;
 using Microsoft.AspNetCore.Mvc;
 using accesscontrol.Services.Base;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using accesscontrol.ExceptionMiddleware;
+using System.Linq;
 
 namespace accesscontrol.Controllers
 {
@@ -17,36 +20,62 @@ namespace accesscontrol.Controllers
         }
 
         [HttpGet("")]
-        public virtual async Task<ActionResult<List<T>>> GetAsync()
+        public virtual async Task<ActionResult<List<T>>> GetAsync(bool active = true)
         {
-            return  await this._service.ListAsync();
+            return await this._service.ListAsync(active);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<T>> GetAsync(int id)
+        public virtual async Task<ActionResult<T>> GetAsync(int id)
         {
             return await this._service.GetByIdAsync(id);
         }
 
         [HttpPost]
-        public async Task<ActionResult<T>> PostAsync([FromBody]T item)
+        public virtual async Task<ActionResult<T>> PostAsync([FromBody]T item)
         {
-            item = await this._service.AddAsync(item);
-            return Created(nameof(item), new { id = item.Id });
+            if (this.ModelState.IsValid)
+            {
+                item = await this._service.AddAsync(item);
+                return Created(nameof(item), new { id = item.Id });
+            }
+
+            throw new CustomException(new MessageDetails(Enums.MessageType.Error, MessagesErrorsModel(this.ModelState)));
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, T item)
+        public virtual async Task<IActionResult> PutAsync(int id, T item)
         {
-            await this._service.UpdateAsync(id, item);
-            return NoContent();
+            if (this.ModelState.IsValid)
+            {
+                await this._service.UpdateAsync(id, item);
+                return NoContent();
+            }
+
+            throw new CustomException(new MessageDetails(Enums.MessageType.Error, MessagesErrorsModel(this.ModelState)));
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
+        public virtual async Task<IActionResult> DeleteAsync(int id)
         {
             await this._service.DeleteAsync(id);
             return NoContent();
+        }
+
+        /// <summary>
+        /// Execute get errors model
+        /// </summary>
+        protected static string MessagesErrorsModel(ModelStateDictionary modelstate)
+        {
+            if (modelstate is null)
+            {
+                throw new CustomException(new MessageDetails(Enums.MessageType.Error, $"Desculpe, mas o objeto passado é inválido"));
+            }
+
+            string messages = string.Join("; ", modelstate.Values
+                                        .SelectMany(x => x.Errors)
+                                        .Select(x => x.ErrorMessage));
+            return messages;
         }
     }
 }

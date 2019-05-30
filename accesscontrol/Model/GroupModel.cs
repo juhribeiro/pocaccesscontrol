@@ -6,6 +6,6 @@ namespace accesscontrol.Model
 {
     public class GroupModel : BaseDataModel
     {
-        public string ApplicationCode { get; set; }
+        public int ApplicationId { get; set; }
     }
 }

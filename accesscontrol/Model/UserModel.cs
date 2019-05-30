@@ -36,7 +36,5 @@ namespace accesscontrol.Model
                 password = password = Criptografy.EncriptPassword(this.Email, value);
             }
         }
-
-        public DateTime ExpirationDate { get; set; }
     }
 }

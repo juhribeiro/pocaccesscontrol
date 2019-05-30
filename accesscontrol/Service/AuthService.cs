@@ -62,22 +62,38 @@ namespace accesscontrol.Service
 
         public string GetEmail()
         {
-            var header = new JwtSecurityTokenHandler().ReadToken(this.ValidToken()) as JwtSecurityToken;
-            return header.Payload[JwtRegisteredClaimNames.Email].ToString();
+            return this.ReadJwt(JwtRegisteredClaimNames.Email);
         }
 
         public int GetUserId()
         {
             var header = new JwtSecurityTokenHandler().ReadToken(this.ValidToken()) as JwtSecurityToken;
-            return int.Parse(header.Payload[JwtRegisteredClaimNames.Sub].ToString());
+            return int.Parse(this.ReadJwt(JwtRegisteredClaimNames.Sub));
+        }
+
+        private string ReadJwt(string read)
+        {
+            var token = this.ValidToken();
+            if (token is null)
+            {
+                return null;
+            }
+
+            var header = new JwtSecurityTokenHandler().ReadToken(token) as JwtSecurityToken;
+            return header.Payload[read].ToString();
         }
 
         private string ValidToken()
         {
+            if (this.httpContextAccessor.HttpContext is null)
+            {
+                return null;
+            }
+
             var bearer = this.httpContextAccessor.HttpContext.Request.Headers["Authorization"];
             if (string.IsNullOrEmpty(bearer))
             {
-                throw new CustomException(new MessageDetails(Enums.MessageType.Unauthorized, "Unauthorized"));
+                return null;
             }
 
             TokenValidationParameters validationParameters = new TokenValidationParameters()

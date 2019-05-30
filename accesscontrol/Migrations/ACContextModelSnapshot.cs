@@ -132,7 +132,9 @@ namespace accesscontrol.Migrations
 
                     b.Property<string>("CreateUser");
 
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("LastChangeDate");
 
@@ -204,7 +206,9 @@ namespace accesscontrol.Migrations
 
                     b.Property<string>("CreateUser");
 
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("LastChangeDate");
 
@@ -216,7 +220,7 @@ namespace accesscontrol.Migrations
 
                     b.HasIndex("ApplicationId");
 
-                    b.ToTable("UserApplication");
+                    b.ToTable("UserApplications");
                 });
 
             modelBuilder.Entity("accesscontrol.Data.UserGroup", b =>
@@ -231,7 +235,9 @@ namespace accesscontrol.Migrations
 
                     b.Property<string>("CreateUser");
 
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("LastChangeDate");
 

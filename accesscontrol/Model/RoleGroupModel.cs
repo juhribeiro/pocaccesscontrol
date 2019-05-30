@@ -6,11 +6,9 @@ namespace accesscontrol.Model
     public class RoleGroupModel : BaseModel
     {
         [Required]
-        [MaxLength(50)]
-        public string RoleCode { get; set; }
+        public int RoleId { get; set; }
 
         [Required]
-        [MaxLength(50)]
-        public string GroupCode { get; set; }
+        public int GroupId { get; set; }
     }
 }

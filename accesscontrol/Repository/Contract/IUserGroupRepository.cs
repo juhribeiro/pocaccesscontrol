@@ -7,6 +7,6 @@ namespace accesscontrol.Repository
 {
     public interface IUserGroupRepository : IBaseRepository<UserGroup, UserGroupModel>
     {
-        Task<UserGroup> GetUserGroupByEmailAsync(string email);
+        Task<UserGroup> GetByEmailAsync(string email);
     }
 }

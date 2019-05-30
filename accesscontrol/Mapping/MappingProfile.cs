@@ -23,14 +23,19 @@ namespace accesscontrol.Mapping
             this.CreateMap<BaseDataModel, BaseData>();
 
             this.CreateMap<BaseEntity, BaseModel>();
-
             this.CreateMap<BaseModel, BaseEntity>();
 
-            this.CreateMap<Group, GroupModel>()
-            .ForMember(dest => dest.ApplicationCode, opt => opt.MapFrom(src => src.Application.Code));
+            this.CreateMap<Group, GroupModel>();
+            this.CreateMap<GroupModel, Group>();
 
-            this.CreateMap<GroupModel, Group>()
-            .ForPath(dest => dest.Application.Code, opt => opt.MapFrom(src => src.ApplicationCode));
+            this.CreateMap<UserApplication, UserApplicationModel>();
+            this.CreateMap<UserApplicationModel, UserApplication>();
+
+            this.CreateMap<RoleGroup, RoleGroupModel>();
+            this.CreateMap<RoleGroupModel, RoleGroup>();
+
+            this.CreateMap<UserGroup, UserGroupModel>();
+            this.CreateMap<UserGroupModel, UserGroup>();
         }
     }
 }

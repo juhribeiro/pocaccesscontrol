@@ -6,11 +6,9 @@ namespace accesscontrol.Model
     public class UserGroupModel : BaseModel
     {
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        public int UserId { get; set; }
 
         [Required]
-        [MaxLength(50)]
-        public string GroupCode { get; set; }
+        public int GroupId { get; set; }
     }
 }

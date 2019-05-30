@@ -4,8 +4,6 @@ namespace accesscontrol.ExceptionMiddleware
 {
     public class CustomException : Exception
     {
-        private readonly MessageDetails message;
-
         public CustomException(MessageDetails message)
         : base(message.ToString())
         {

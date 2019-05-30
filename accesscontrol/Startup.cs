@@ -72,8 +72,8 @@ namespace accesscontrol
             services.AddScoped<IUserApplicationService, UserApplicationService>();
             services.AddScoped<IUserApplicationRepository, UserApplicationRepository>();
 
-            services.AddScoped<IUserApplicationService, UserApplicationService>();
-            services.AddScoped<IUserApplicationRepository, UserApplicationRepository>();
+            services.AddScoped<IRoleGroupService, RoleGroupService>();
+            services.AddScoped<IRoleGroupRepository, RoleGroupRepository>();
 
             services.AddScoped<IAuthService, AuthService>();
 

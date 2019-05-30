@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using accesscontrol.Data;
 using accesscontrol.Model;
@@ -11,37 +12,21 @@ namespace accesscontrol.Service
 {
     public class UserService : BaseService<User, UserModel>, IUserService
     {
+        private readonly IUserRepository userRepository;
+
         public UserService(IMapper mapper, IUserRepository repository) : base(mapper, repository)
         {
+            this.userRepository = repository;
         }
 
-        public async Task<UserModel> AddAsync(UserModel model)
+        public async Task<List<UserModel>> GetByGroupIdAsync(int groupId)
         {
-            var user = this._mapper.Map<User>(model);
-            var entity = await this._repository.AddAsync(user);
-            return entity;
+            return await this.userRepository.GetByGroupIdAsync(groupId);
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task<List<UserModel>> GetByApplicationIdAsync(int applicationId)
         {
-            await this._repository.DeleteAsync(id);
-        }
-
-        public async Task<UserModel> GetByIdAsync(int id)
-        {
-            return await this._repository.GetByIdAsync(id);
-        }
-
-        public async Task<List<UserModel>> ListAsync()
-        {
-            return await this._repository.ListAsync();
-        }
-
-        public async Task UpdateAsync(int id, UserModel model)
-        {
-            var role = this._mapper.Map<User>(model);
-            role.Id = id;
-            await this._repository.UpdateAsync(role);
+            return await this.userRepository.GetByApplicationIdAsync(applicationId);
         }
     }
 }

@@ -10,8 +10,7 @@ namespace accesscontrol.Util
     /// </summary>
     public static class Criptografy
     {
-        public const string Salt = "@#$!¨**¨$#";
-        private const string EncryptKey = "@ac3'#=¬¬";
+        private const string Salt = "@#$!¨**¨$#";
 
         /// <summary>
         /// Returns a MD5 Hash
@@ -33,46 +32,9 @@ namespace accesscontrol.Util
             return stringb.ToString();
         }
 
-        /// <summary>
-        /// Decrypt a value (with a private key)
-        /// </summary>
-        /// <param name="value">Value to decrypt</param>
-        /// <param name="key">key of decrypt</param>
-        /// <returns>Value decrypted</returns>
-        public static string SymmetricDecrypt(this string value, string key)
-        {
-            if (string.IsNullOrWhiteSpace(value))
-            {
-                return null;
-            }
-
-            var aesDesProvider = GetAesCryptoServiceProvider(key);
-            var valueArray = Convert.FromBase64String(value);
-            var decryptor = aesDesProvider.CreateDecryptor();
-            var resultArray = decryptor.TransformFinalBlock(valueArray, 0, valueArray.Length);
-
-            aesDesProvider.Clear();
-
-            var result = UTF8Encoding.UTF8.GetString(resultArray);
-            return result;
-        }
-
-        private static AesCryptoServiceProvider GetAesCryptoServiceProvider(string key = null)
-        {
-            var sha256 = new SHA256Managed();
-            var aesProvider = new AesCryptoServiceProvider();
-            aesProvider.Key = sha256.ComputeHash(Encoding.UTF8.GetBytes(string.Format("{0}{1}", EncryptKey, key)));
-            aesProvider.Mode = CipherMode.ECB;
-            aesProvider.Padding = PaddingMode.PKCS7;
-
-            sha256.Clear();
-
-            return aesProvider;
-        }
-
         public static string EncriptPassword(string email, string password)
         {
-            return string.Format("{0}#{1}#{2}#{3}", email, password, Criptografy.Salt, DateTime.UtcNow.ToString("dd/MM/yyyy hh:mm:ss")).GetSha256Hash();
+            return string.Format("#{0}¬¬{1}¬¬{2}#", email, password, Criptografy.Salt).GetSha256Hash();
         }
     }
 }
