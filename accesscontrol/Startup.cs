@@ -53,6 +53,8 @@ namespace accesscontrol
             services.Configure<AuthConfig>(Configuration.GetSection("AuthConfig"));
             var authconfig = this.Configuration.GetSection("AuthConfig").Get<AuthConfig>();
 
+            services.Configure<EmailSettings>(Configuration.GetSection("EmailSettings"));
+
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserService, UserService>();
 
@@ -76,6 +78,7 @@ namespace accesscontrol
             services.AddScoped<IRoleGroupRepository, RoleGroupRepository>();
 
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IEmailSender, EmailSender>();
 
             services.AddAuthorization(auth =>
                    {

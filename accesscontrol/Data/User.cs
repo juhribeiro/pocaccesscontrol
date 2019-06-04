@@ -37,5 +37,7 @@ namespace accesscontrol.Data
         public DateTime ExpirationDate { get; set; }
 
         public int? NumberLoginErros { get; set; }
+
+        public int? NumberGenerate { get; set; }
     }
 }

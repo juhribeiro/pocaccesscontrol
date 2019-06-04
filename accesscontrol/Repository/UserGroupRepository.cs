@@ -34,5 +34,12 @@ namespace accesscontrol.Repository
             entity.User = await this.GetUser(entity.UserId);
             await base.UpdateAsync(entity);
         }
+
+        public async Task<UserGroup> GetByNumberGenerateAsync(int number)
+        {
+            return await this._dbContext.UserGroups.Include(x => x.User)
+              .Include(x => x.Group).ThenInclude(x => x.RoleGroups)
+              .ThenInclude(x => x.Role).FirstOrDefaultAsync(x => x.User.NumberGenerate.Equals(number) && x.Active); throw new System.NotImplementedException();
+        }
     }
 }

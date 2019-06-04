@@ -3,7 +3,8 @@ using accesscontrol.Services.Base;
 
 namespace accesscontrol.Service
 {
-    public interface IApplicationService : IBaseService<ApplicationModel>
+    public interface IEmailSender
     {
+        void SendEmail(string body, string email);
     }
 }
