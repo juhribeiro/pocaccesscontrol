@@ -10,7 +10,7 @@ using accesscontrol.Data;
 namespace accesscontrol.Migrations
 {
     [DbContext(typeof(ACContext))]
-    [Migration("20190528013114_Initial")]
+    [Migration("20190621162111_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -180,6 +180,8 @@ namespace accesscontrol.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(150);
+
+                    b.Property<int?>("NumberGenerate");
 
                     b.Property<int?>("NumberLoginErros");
 

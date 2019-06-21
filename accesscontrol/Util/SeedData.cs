@@ -11,7 +11,7 @@ namespace accesscontrol.Util
         public const string PrincipalApplication = "J&M";
         private const string PrincipalUser = "J&M";
         public const string PrincipalEmail = "juliane.goncalves94@gmail.com";
-        private const string AdmGroupAC = "AdmGroupAC";
+        public const string AdmGroupCashAC = "AdmCashAC";
 
         public static async Task SeedAsync(ACContext context)
         {
@@ -39,7 +39,7 @@ namespace accesscontrol.Util
             var group = new Group
             {
                 Application = CreateApplication(),
-                Code = AdmGroupAC,
+                Code = AdmGroupCashAC,
                 Name = "Adm Access Control",
                 Description = "Adm Access Control"
             };

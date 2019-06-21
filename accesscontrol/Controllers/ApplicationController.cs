@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using accesscontrol.ExceptionMiddleware;
 using accesscontrol.Model;
 using accesscontrol.Permission;
 using accesscontrol.Service;
@@ -11,8 +12,11 @@ namespace accesscontrol.Controllers
 {
     public class ApplicationController : BaseController<ApplicationModel>
     {
+        private readonly IApplicationService _service;
+
         public ApplicationController(IApplicationService service) : base(service)
         {
+            this._service = service;
         }
 
         [Authorize(Roles = ApplicationPermission.GetApplication)]
@@ -31,6 +35,18 @@ namespace accesscontrol.Controllers
         public override async Task<ActionResult<ApplicationModel>> PostAsync([FromBody]ApplicationModel item)
         {
             return await base.PostAsync(item);
+        }
+
+        [HttpPost("Register")]
+        public async Task<ActionResult<ApplicationModel>> RegisterAsync([FromBody]RegisterApplicationModel item)
+        {
+            if (this.ModelState.IsValid)
+            {
+                item = await this._service.RegisterAsync(item);
+                return Created(nameof(item), new { id = item.Application.Id });
+            }
+
+            throw new CustomException(new MessageDetails(Enums.MessageType.Error, MessagesErrorsModel(this.ModelState)));
         }
 
         [Authorize(Roles = ApplicationPermission.EditApplication)]

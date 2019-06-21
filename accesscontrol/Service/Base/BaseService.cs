@@ -20,16 +20,16 @@ namespace accesscontrol.Services.Base
 
         public async Task<T2> AddAsync(T2 model)
         {
-            var document = this._mapper.Map<T1>(model);
-            var entity = await this._repository.AddAsync(document);
+            var mapping = this._mapper.Map<T1>(model);
+            var entity = await this._repository.AddAsync(mapping);
             return entity;
         }
 
         public Task UpdateAsync(int id, T2 model)
         {
-            var stub = this._mapper.Map<T1>(model);
-            stub.Id = id;
-            return this._repository.UpdateAsync(stub);
+            var mapping = this._mapper.Map<T1>(model);
+            mapping.Id = id;
+            return this._repository.UpdateAsync(mapping);
         }
 
         public async Task<List<T2>> ListAsync(bool active)

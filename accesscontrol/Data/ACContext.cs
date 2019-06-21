@@ -136,7 +136,8 @@ namespace accesscontrol.Data
             modelBuilder.Entity<Application>()
                 .HasMany(x => x.Groups)
                 .WithOne(x => x.Application)
-                .HasForeignKey(x => x.ApplicationId);
+                .HasForeignKey(x => x.ApplicationId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             //// Unique
             modelBuilder.Entity<Group>()

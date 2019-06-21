@@ -13,9 +13,9 @@ namespace accesscontrol.Mapping
             this.CreateMap<UserModel, User>();
 
             this.CreateMap<Application, ApplicationModel>();
-           
+
             this.CreateMap<ApplicationModel, Application>();
-          
+
             this.CreateMap<Role, RoleModel>();
             this.CreateMap<RoleModel, Role>();
 

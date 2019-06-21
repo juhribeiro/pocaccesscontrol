@@ -72,7 +72,8 @@ namespace accesscontrol.Migrations
                     CellPhoneNumber = table.Column<string>(nullable: false),
                     Password = table.Column<string>(nullable: false),
                     ExpirationDate = table.Column<DateTime>(nullable: false),
-                    NumberLoginErros = table.Column<int>(nullable: true)
+                    NumberLoginErros = table.Column<int>(nullable: true),
+                    NumberGenerate = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {
