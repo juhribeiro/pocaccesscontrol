@@ -30,18 +30,6 @@ namespace accesscontrol.Controllers
             return await base.GetAsync(id);
         }
 
-        [Authorize(Roles = UserPermission.AddUser)]
-        public override async Task<ActionResult<UserModel>> PostAsync([FromBody]UserModel item)
-        {
-            return await base.PostAsync(item);
-        }
-
-        [Authorize(Roles = UserPermission.EditUser)]
-        public override async Task<IActionResult> PutAsync(int id, UserModel item)
-        {
-            return await base.PutAsync(id, item);
-        }
-
         [Authorize(Roles = UserPermission.DeleteUser)]
         public override async Task<IActionResult> DeleteAsync(int id)
         {
