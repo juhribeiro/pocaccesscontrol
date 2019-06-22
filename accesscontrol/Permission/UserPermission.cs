@@ -6,11 +6,9 @@ namespace accesscontrol.Permission
     public class UserPermission
     {
         public const string GetUser = "GetUser";
-        public const string AddUser = "AddUser";
         public const string GetUserById = "GetUserById";
         public const string GetUserByGroup = "GetUserByGroup";
         public const string GetUserByApplication = "GetUserByApplication";
-        public const string EditUser = "EditUser";
         public const string DeleteUser = "DeleteUser";
 
         public static List<Role> GetRoles()
@@ -25,21 +23,9 @@ namespace accesscontrol.Permission
                 },
                 new Role
                 {
-                    Code = AddUser,
-                    Name = "Add User",
-                    Description = "Add new Users"
-                },
-                new Role
-                {
                     Code = GetUserById,
                     Name = "Get User by Id",
                     Description = "Get User by Id"
-                },
-                new Role
-                {
-                    Code = EditUser,
-                    Name = "Edit User",
-                    Description = "Edit User"
                 },
                 new Role
                 {
