@@ -18,9 +18,9 @@ namespace accesscontrol.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CreateUser = table.Column<string>(nullable: true),
+                    CreateUser = table.Column<int>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
-                    LastChangeUser = table.Column<string>(nullable: true),
+                    LastChangeUser = table.Column<int>(nullable: true),
                     LastChangeDate = table.Column<DateTime>(nullable: false),
                     Active = table.Column<bool>(nullable: false),
                     Code = table.Column<string>(maxLength: 50, nullable: false),
@@ -39,9 +39,9 @@ namespace accesscontrol.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CreateUser = table.Column<string>(nullable: true),
+                    CreateUser = table.Column<int>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
-                    LastChangeUser = table.Column<string>(nullable: true),
+                    LastChangeUser = table.Column<int>(nullable: true),
                     LastChangeDate = table.Column<DateTime>(nullable: false),
                     Active = table.Column<bool>(nullable: false),
                     Code = table.Column<string>(maxLength: 50, nullable: false),
@@ -60,9 +60,9 @@ namespace accesscontrol.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CreateUser = table.Column<string>(nullable: true),
+                    CreateUser = table.Column<int>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
-                    LastChangeUser = table.Column<string>(nullable: true),
+                    LastChangeUser = table.Column<int>(nullable: true),
                     LastChangeDate = table.Column<DateTime>(nullable: false),
                     Active = table.Column<bool>(nullable: false),
                     Name = table.Column<string>(maxLength: 150, nullable: false),
@@ -87,9 +87,9 @@ namespace accesscontrol.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CreateUser = table.Column<string>(nullable: true),
+                    CreateUser = table.Column<int>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
-                    LastChangeUser = table.Column<string>(nullable: true),
+                    LastChangeUser = table.Column<int>(nullable: true),
                     LastChangeDate = table.Column<DateTime>(nullable: false),
                     Active = table.Column<bool>(nullable: false),
                     Code = table.Column<string>(maxLength: 50, nullable: false),
@@ -118,9 +118,9 @@ namespace accesscontrol.Migrations
                     ApplicationId = table.Column<int>(nullable: false),
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CreateUser = table.Column<string>(nullable: true),
+                    CreateUser = table.Column<int>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
-                    LastChangeUser = table.Column<string>(nullable: true),
+                    LastChangeUser = table.Column<int>(nullable: true),
                     LastChangeDate = table.Column<DateTime>(nullable: false),
                     Active = table.Column<bool>(nullable: false)
                 },
@@ -153,9 +153,9 @@ namespace accesscontrol.Migrations
                     GroupId = table.Column<int>(nullable: false),
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CreateUser = table.Column<string>(nullable: true),
+                    CreateUser = table.Column<int>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
-                    LastChangeUser = table.Column<string>(nullable: true),
+                    LastChangeUser = table.Column<int>(nullable: true),
                     LastChangeDate = table.Column<DateTime>(nullable: false),
                     Active = table.Column<bool>(nullable: false)
                 },
@@ -188,9 +188,9 @@ namespace accesscontrol.Migrations
                     GroupId = table.Column<int>(nullable: false),
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    CreateUser = table.Column<string>(nullable: true),
+                    CreateUser = table.Column<int>(nullable: true),
                     CreateDate = table.Column<DateTime>(nullable: false),
-                    LastChangeUser = table.Column<string>(nullable: true),
+                    LastChangeUser = table.Column<int>(nullable: true),
                     LastChangeDate = table.Column<DateTime>(nullable: false),
                     Active = table.Column<bool>(nullable: false)
                 },

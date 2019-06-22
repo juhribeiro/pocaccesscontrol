@@ -52,7 +52,7 @@ namespace accesscontrol.Service
                 throw new CustomException(new MessageDetails(MessageType.Warning, "usuário não cadastrado ou não pertence a nenhum grupo"));
             }
 
-            var expiratedate = System.DateTime.Now.AddMinutes(30);
+            var expiratedate = System.DateTime.Now.AddMinutes(1440);
             if (usergroups.User.Password != model.Password)
             {
                 usergroups.User.NumberLoginErros++;

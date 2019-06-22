@@ -7,9 +7,9 @@ namespace accesscontrol.Data
     {
         [Key]
         public int Id { get; set; }
-        public string CreateUser { get; set; }
+        public int? CreateUser { get; set; }
         public DateTime CreateDate { get; set; }
-        public string LastChangeUser { get; set; }
+        public int? LastChangeUser { get; set; }
         public DateTime LastChangeDate { get; set; }
         public bool Active { get; set; }
     }

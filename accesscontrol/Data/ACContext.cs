@@ -51,7 +51,7 @@ namespace accesscontrol.Data
 
                         if (entry.Properties.Any(a => a.Metadata.Name.Contains("CreateUser")))
                         {
-                            entry.Property("CreateUser").CurrentValue = this.auth.GetEmail();
+                            entry.Property("CreateUser").CurrentValue = this.auth.GetUserId();
                         }
 
                         if (entry.Properties.Any(a => a.Metadata.Name.Contains("Active")))
@@ -62,7 +62,7 @@ namespace accesscontrol.Data
 
                     if (entry.Properties.Any(a => a.Metadata.Name.Contains("LastChangeUser")))
                     {
-                        entry.Property("LastChangeUser").CurrentValue = this.auth.GetEmail();
+                        entry.Property("LastChangeUser").CurrentValue = this.auth.GetUserId();
                     }
 
                     if (entry.Properties.Any(a => a.Metadata.Name.Contains("LastChangeDate")))

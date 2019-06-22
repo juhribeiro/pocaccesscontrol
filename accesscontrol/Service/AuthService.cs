@@ -67,7 +67,6 @@ namespace accesscontrol.Service
 
         public int GetUserId()
         {
-            var header = new JwtSecurityTokenHandler().ReadToken(this.ValidToken()) as JwtSecurityToken;
             return int.Parse(this.ReadJwt(JwtRegisteredClaimNames.Sub));
         }
 

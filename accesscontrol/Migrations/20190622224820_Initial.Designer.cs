@@ -10,7 +10,7 @@ using accesscontrol.Data;
 namespace accesscontrol.Migrations
 {
     [DbContext(typeof(ACContext))]
-    [Migration("20190621162111_Initial")]
+    [Migration("20190622224820_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,13 +36,13 @@ namespace accesscontrol.Migrations
 
                     b.Property<DateTime>("CreateDate");
 
-                    b.Property<string>("CreateUser");
+                    b.Property<int?>("CreateUser");
 
                     b.Property<string>("Description");
 
                     b.Property<DateTime>("LastChangeDate");
 
-                    b.Property<string>("LastChangeUser");
+                    b.Property<int?>("LastChangeUser");
 
                     b.Property<string>("Name");
 
@@ -70,13 +70,13 @@ namespace accesscontrol.Migrations
 
                     b.Property<DateTime>("CreateDate");
 
-                    b.Property<string>("CreateUser");
+                    b.Property<int?>("CreateUser");
 
                     b.Property<string>("Description");
 
                     b.Property<DateTime>("LastChangeDate");
 
-                    b.Property<string>("LastChangeUser");
+                    b.Property<int?>("LastChangeUser");
 
                     b.Property<string>("Name");
 
@@ -104,13 +104,13 @@ namespace accesscontrol.Migrations
 
                     b.Property<DateTime>("CreateDate");
 
-                    b.Property<string>("CreateUser");
+                    b.Property<int?>("CreateUser");
 
                     b.Property<string>("Description");
 
                     b.Property<DateTime>("LastChangeDate");
 
-                    b.Property<string>("LastChangeUser");
+                    b.Property<int?>("LastChangeUser");
 
                     b.Property<string>("Name");
 
@@ -132,7 +132,7 @@ namespace accesscontrol.Migrations
 
                     b.Property<DateTime>("CreateDate");
 
-                    b.Property<string>("CreateUser");
+                    b.Property<int?>("CreateUser");
 
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -140,7 +140,7 @@ namespace accesscontrol.Migrations
 
                     b.Property<DateTime>("LastChangeDate");
 
-                    b.Property<string>("LastChangeUser");
+                    b.Property<int?>("LastChangeUser");
 
                     b.HasKey("RoleId", "GroupId");
 
@@ -164,7 +164,7 @@ namespace accesscontrol.Migrations
 
                     b.Property<DateTime>("CreateDate");
 
-                    b.Property<string>("CreateUser");
+                    b.Property<int?>("CreateUser");
 
                     b.Property<string>("DocumentNumber");
 
@@ -175,7 +175,7 @@ namespace accesscontrol.Migrations
 
                     b.Property<DateTime>("LastChangeDate");
 
-                    b.Property<string>("LastChangeUser");
+                    b.Property<int?>("LastChangeUser");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -208,7 +208,7 @@ namespace accesscontrol.Migrations
 
                     b.Property<DateTime>("CreateDate");
 
-                    b.Property<string>("CreateUser");
+                    b.Property<int?>("CreateUser");
 
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -216,7 +216,7 @@ namespace accesscontrol.Migrations
 
                     b.Property<DateTime>("LastChangeDate");
 
-                    b.Property<string>("LastChangeUser");
+                    b.Property<int?>("LastChangeUser");
 
                     b.HasKey("UserId", "ApplicationId");
 
@@ -237,7 +237,7 @@ namespace accesscontrol.Migrations
 
                     b.Property<DateTime>("CreateDate");
 
-                    b.Property<string>("CreateUser");
+                    b.Property<int?>("CreateUser");
 
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -245,7 +245,7 @@ namespace accesscontrol.Migrations
 
                     b.Property<DateTime>("LastChangeDate");
 
-                    b.Property<string>("LastChangeUser");
+                    b.Property<int?>("LastChangeUser");
 
                     b.HasKey("UserId", "GroupId");
 
