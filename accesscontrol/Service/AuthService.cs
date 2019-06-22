@@ -67,7 +67,8 @@ namespace accesscontrol.Service
 
         public int GetUserId()
         {
-            return int.Parse(this.ReadJwt(JwtRegisteredClaimNames.Sub));
+            var userId = this.ReadJwt(JwtRegisteredClaimNames.Sub);
+            return string.IsNullOrEmpty(userId) ? 0 : int.Parse(userId);
         }
 
         private string ReadJwt(string read)
