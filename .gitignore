@@ -3,3 +3,8 @@ accesscontrol/.vscode/tasks.json
 accesscontrol/.vscode/launch.json
 accesscontrol/obj/
 accesscontrol/Debug/
+accesscontrol/.vs/accesscontrol/v16/Server/sqlite3/storage.ide-wal
+accesscontrol/.vs/accesscontrol/v16/Server/sqlite3/storage.ide-shm
+accesscontrol/.vs/accesscontrol/v16/Server/sqlite3/storage.ide
+accesscontrol/.vs/accesscontrol/v16/Server/sqlite3/db.lock
+accesscontrol/.vs/accesscontrol/DesignTimeBuild/.dtbcache
