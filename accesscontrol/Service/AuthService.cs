@@ -32,6 +32,7 @@ namespace accesscontrol.Service
             {
                 new Claim(JwtRegisteredClaimNames.Sub, entity.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, email),
+                new Claim(JwtRegisteredClaimNames.NameId, entity.Name),
                 new Claim(JwtRegisteredClaimNames.Jti, System.Guid.NewGuid().ToString()),
             };
 

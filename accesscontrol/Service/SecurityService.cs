@@ -49,7 +49,7 @@ namespace accesscontrol.Service
             var usergroups = await this.repository.GetByEmailAsync(model.Email);
             if (usergroups is null)
             {
-                throw new CustomException(new MessageDetails(MessageType.Warning, "usuário não cadastrado ou não pertence a nenhum grupo"));
+                throw new CustomException(new MessageDetails(MessageType.Warning, "usuário não cadastrado"));
             }
 
             var expiratedate = System.DateTime.Now.AddMinutes(1440);
@@ -82,7 +82,7 @@ namespace accesscontrol.Service
             var usergroups = await this.repository.GetByEmailAsync(model.Email);
             if (usergroups is null)
             {
-                throw new CustomException(new MessageDetails(MessageType.Warning, "usuário não cadastrado ou não pertence a nenhum grupo"));
+                throw new CustomException(new MessageDetails(MessageType.Warning, "usuário não cadastrado"));
             }
 
             var num = await this.ValidRandom();
