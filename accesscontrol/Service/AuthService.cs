@@ -1,16 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using accesscontrol.Data;
-using accesscontrol.ExceptionMiddleware;
 using accesscontrol.Model;
 using accesscontrol.Util;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
 
 namespace accesscontrol.Service
 {
@@ -25,14 +23,14 @@ namespace accesscontrol.Service
             this.httpContextAccessor = httpContextAccessor;
         }
 
-        public SecurityModel GenerateToken(UserGroup entity, DateTime expirate)
+        public SecurityModel GenerateToken(User entity, DateTime expirate)
         {
-            var email = entity.User.Email;
-            var permissions = entity.Group.RoleGroups.Select(x => x.Role).Select(x => x.Code).ToList();
+            var email = entity.Email;
+            var permissions = entity.UserGroups.Select(x => x.Group).SelectMany(x => x.RoleGroups).Select(x => x.Role).Select(x => x.Code).ToList();
 
             var claims = new List<Claim>
             {
-                new Claim(JwtRegisteredClaimNames.Sub, entity.UserId.ToString()),
+                new Claim(JwtRegisteredClaimNames.Sub, entity.Id.ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, email),
                 new Claim(JwtRegisteredClaimNames.Jti, System.Guid.NewGuid().ToString()),
             };

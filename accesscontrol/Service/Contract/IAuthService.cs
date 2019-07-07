@@ -7,7 +7,7 @@ namespace accesscontrol.Service
 {
     public interface IAuthService
     {
-        SecurityModel GenerateToken(UserGroup entity, DateTime expirate);
+        SecurityModel GenerateToken(User entity, DateTime expirate);
 
         string GetEmail();
 

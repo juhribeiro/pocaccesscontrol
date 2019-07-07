@@ -10,5 +10,7 @@ namespace accesscontrol.Repository
     {
         Task<List<UserModel>> GetByGroupIdAsync(int groupId);
         Task<List<UserModel>> GetByApplicationIdAsync(int applicationId);
+        Task<User> GetByEmailAsync(string email);
+        Task<User> GetByNumberGenerateAsync(int number);
     }
 }

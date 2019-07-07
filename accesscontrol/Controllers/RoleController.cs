@@ -1,11 +1,10 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using accesscontrol.Model;
 using accesscontrol.Permission;
 using accesscontrol.Service;
-using accesscontrol.Services.Base;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace accesscontrol.Controllers
 {
@@ -14,7 +13,7 @@ namespace accesscontrol.Controllers
         public RoleController(IRoleService service) : base(service)
         {
         }
-        
+
         [Authorize(Roles = RolePermission.GetRole)]
         public override async Task<ActionResult<List<RoleModel>>> GetAsync(bool active = true)
         {

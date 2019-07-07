@@ -19,11 +19,11 @@ namespace accesscontrol.Service
     public class SecurityService : ISecurityService
     {
         private readonly IMapper mapper;
-        private readonly IUserGroupRepository repository;
+        private readonly IUserRepository repository;
         private readonly IAuthService service;
         private readonly IEmailSender sender;
 
-        public SecurityService(IMapper mapper, IUserGroupRepository repository, IAuthService service, IEmailSender sender)
+        public SecurityService(IMapper mapper, IUserRepository repository, IAuthService service, IEmailSender sender)
         {
             this.mapper = mapper;
             this.repository = repository;
@@ -39,8 +39,8 @@ namespace accesscontrol.Service
                 throw new CustomException(new MessageDetails(MessageType.Warning, "codigo inválido"));
             }
 
-            usergroups.User.Password = Criptografy.EncriptPassword(usergroups.User.Email, model.NewPassword);
-            usergroups.User.NumberGenerate = null;
+            usergroups.Password = Criptografy.EncriptPassword(usergroups.Email, model.NewPassword);
+            usergroups.NumberGenerate = null;
             await this.repository.UpdateAsync(usergroups);
         }
 
@@ -53,12 +53,12 @@ namespace accesscontrol.Service
             }
 
             var expiratedate = System.DateTime.Now.AddMinutes(1440);
-            if (usergroups.User.Password != model.Password)
+            if (usergroups.Password != model.Password)
             {
-                usergroups.User.NumberLoginErros++;
-                if (usergroups.User.NumberLoginErros > 3)
+                usergroups.NumberLoginErros++;
+                if (usergroups.NumberLoginErros > 3)
                 {
-                    usergroups.User.Active = false;
+                    usergroups.Active = false;
                     var message = "Quantidade de tentativa de logins excedida, Tente recuperar sua senha para desbloquear seu usuário";
                     throw new CustomException(new MessageDetails(MessageType.Warning, message));
                 }
@@ -68,8 +68,8 @@ namespace accesscontrol.Service
             }
             else
             {
-                usergroups.User.NumberLoginErros = 0;
-                usergroups.User.ExpirationDate = expiratedate;
+                usergroups.NumberLoginErros = 0;
+                usergroups.ExpirationDate = expiratedate;
                 await this.repository.UpdateAsync(usergroups);
             }
 
@@ -86,9 +86,9 @@ namespace accesscontrol.Service
             }
 
             var num = await this.ValidRandom();
-            usergroups.User.NumberGenerate = num;
+            usergroups.NumberGenerate = num;
             await this.repository.UpdateAsync(usergroups);
-            sender.SendEmail($"Code {num}", usergroups.User.Email);
+            sender.SendEmail($"Code {num}", usergroups.Email);
         }
 
         private async Task<int> ValidRandom()
@@ -96,14 +96,14 @@ namespace accesscontrol.Service
             Random random = new Random();
 
             int num = 0;
-            UserGroup usergroups = null;
+            User user = null;
 
             do
             {
                 num = random.Next(1000, 9999);
-                usergroups = await this.repository.GetByNumberGenerateAsync(num);
+                user = await this.repository.GetByNumberGenerateAsync(num);
 
-            } while (usergroups != null);
+            } while (user != null);
 
             return num;
         }

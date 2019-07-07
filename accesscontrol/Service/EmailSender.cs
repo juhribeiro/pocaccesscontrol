@@ -1,13 +1,10 @@
+using accesscontrol.Util;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.ComponentModel;
 using System.Net;
 using System.Net.Mail;
-using System.Threading.Tasks;
-using accesscontrol.Service;
-using accesscontrol.Util;
-using AutoMapper.Configuration;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace accesscontrol.Service
 {
@@ -50,7 +47,7 @@ namespace accesscontrol.Service
             mailMessage.From = fromAddress;
             mailMessage.SubjectEncoding = System.Text.Encoding.UTF8;
             mailMessage.To.Add(email);
-            mailMessage.Body += body;
+            mailMessage.Body = settings.Value.Body + "\n" + body;
             mailMessage.Subject = settings.Value.Subject;
 
             var client = new SmtpClient(settings.Value.SmtpClient, settings.Value.Port);

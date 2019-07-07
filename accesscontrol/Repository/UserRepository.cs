@@ -36,5 +36,19 @@ namespace accesscontrol.Repository
 
             return this._mapper.Map<List<UserModel>>(users.Select(x => x.User));
         }
+
+        public async Task<User> GetByEmailAsync(string email)
+        {
+            return await this._dbContext.Users.Include(x => x.UserGroups)
+            .ThenInclude(x => x.Group).ThenInclude(x => x.RoleGroups)
+            .ThenInclude(x => x.Role).FirstOrDefaultAsync(x => x.Email.Equals(email) && x.Active);
+        }
+
+        public async Task<User> GetByNumberGenerateAsync(int number)
+        {
+            return await this._dbContext.Users.Include(x => x.UserGroups)
+              .ThenInclude(x => x.Group).ThenInclude(x => x.RoleGroups)
+              .ThenInclude(x => x.Role).FirstOrDefaultAsync(x => x.NumberGenerate.Equals(number) && x.Active);
+        }
     }
 }

@@ -1,10 +1,9 @@
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using accesscontrol.ExceptionMiddleware;
 using accesscontrol.Model;
 using accesscontrol.Service;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace accesscontrol.Controllers
 {
